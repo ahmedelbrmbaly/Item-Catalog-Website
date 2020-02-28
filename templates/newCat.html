@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>New Category</title>
+  </head>
+  <body>
+    <form action="{{url_for('newCat' )}}" method = 'POST'>
+
+    <strong>Name : </strong>
+
+    <input type='text' size='30' name='name' placeholder="Category Name">
+    <br>
+    <input type='submit' value='Add'>
+    <a href='{{url_for('main')}}'>Cancel</a>
+    </form>
+
+
+  </body>
+</html>

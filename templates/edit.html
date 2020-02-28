@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{{item.name}} Edit</title>
+  </head>
+  <body>
+    <form action="{{url_for('editItem', cat_id = item.cat_id,item_id = item.id)}}" method = 'POST'>
+    <strong>Name : </strong>
+    <input type='text' size='30' name='name' value="{{item.name}}">
+    <br>
+    <strong>Description : </strong>
+    <input type='text' size='30' name='description' value="{{item.description}}">
+    <br>
+    <strong>Price in $  : </strong>
+    <input type='text' size='30' name='price' value="{{item.price}}">
+    <br>
+    <input type='submit' value='Update'>
+    <a href='{{url_for('showItems', cat_id = item.cat_id)}}'>Cancel</a>
+
+    </form>
+    
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!--
+  I used many sites as a refrence in this step:
+
+  https://developers.google.com/identity/sign-in/web/server-side-flow
+  https://developers.google.com/identity/sign-in/web/sign-in
+  https://developers.google.com/identity/protocols/OAuth2
+  https://github.com/udacity/ud330/blob/master/Lesson2/step4/templates/login.html
+  https://gist.github.com/shyamgupta/d8ba035403e8165510585b805cf64ee6
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- The title of the page -->
+    <title>Login</title>
+    <!-- Specify my app's client id -->
+    <meta name="google-signin-client_id" content="126529011847-clhkmnkn2bk622me28qmebrbt41gm69f.apps.googleusercontent.com">
+
+    <!-- Load google paltform libraries and pre-requirements -->
+     <script src="https://apis.google.com/js/platform.js" async defer></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+     <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+     <script>
+    function start() {
+      gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+          client_id: '126529011847-clhkmnkn2bk622me28qmebrbt41gm69f.apps.googleusercontent.com'
+        });
+      });
+    }
+  </script>
+
+  </head>
+
+
+
+  <body>
+    <!-- Show a sign in button -->
+    <div id="signinButton" class="g-signin2"></div>
+
+    <!-- A div to show results from  "signInCallback" function-->
+    <div id="result"></div>
+
+
+    <!-- Script  to handle information send my google -->
+    <script>
+    $('#signinButton').click(function() {
+      function signInCallback(authResult){
+        if (authResult['code']){
+          $('#signinButton').attr('style', 'display: none');
+          $.ajax({
+            type: 'POST',
+            url: '/gconnect?state={{STATE}}',
+            headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+            },
+            contentType: 'application/octet-stream; charset=utf-8',
+            success:function(result){
+              $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+                   setTimeout(function() {
+                    window.location.href = "/";
+                   }, 2000);
+            },
+            processData:false,
+            data:authResult['code']
+          });
+        } else{
+          // handle error
+          console.log('There was an error: ' + authResult['error']);
+          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+
+        }
+      }
+      auth2.grantOfflineAccess().then(signInCallback);
+    });
+  </script>
+
+
+  </body>
+</html>
